@@ -12,20 +12,54 @@ import hashlib
 import json
 import os
 import re
+import time
 import unicodedata
 from pathlib import Path
 
 CACHE = Path(__file__).resolve().parents[1] / "resultados" / "cache_llm"
 
 
+class SinCuota(Exception):
+    """Se acabó el presupuesto de llamadas de esta corrida o la cuota diaria del proveedor.
+
+    El medidor se detiene y guarda lo que lleva. Lo ya respondido queda en caché, así que al
+    volver a correr (por ejemplo, al día siguiente) solo se hacen las llamadas que faltan.
+    """
+
+
 def _sin_tildes(texto: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", texto.lower()) if unicodedata.category(c) != "Mn")
 
 
+def _es_limite(error: Exception) -> bool:
+    texto = str(error)
+    return "429" in texto or "RESOURCE_EXHAUSTED" in texto or "rate limit" in texto.lower() or "quota" in texto.lower()
+
+
+def _es_cuota_diaria(error: Exception) -> bool:
+    texto = str(error).lower()
+    return "perday" in texto or "per day" in texto or "per_day" in texto or "requests per day" in texto
+
+
+def _espera_sugerida(error: Exception, por_defecto: float = 30.0) -> float:
+    m = re.search(r"retry(?:_| )?delay['\"]?\s*[:=]\s*['\"]?(\d+(?:\.\d+)?)s", str(error), re.I) or \
+        re.search(r"retry in (\d+(?:\.\d+)?)\s*s", str(error), re.I)
+    return min(float(m.group(1)) + 1, 90.0) if m else por_defecto
+
+
 class _ConCache:
-    """Guarda cada respuesta en disco: la misma consulta no se paga dos veces."""
+    """Guarda cada respuesta en disco: la misma consulta no se paga dos veces.
+
+    Para planes gratuitos: max_llamadas pone un tope de llamadas reales por corrida (la caché no
+    cuenta), espera_min deja unos segundos entre llamadas para no pasar el límite por minuto, y un
+    error 429 se reintenta esperando; si es la cuota diaria, se detiene con SinCuota.
+    """
 
     nombre = "modelo"
+    max_llamadas: int | None = None
+    espera_min: float = 0.0
+    llamadas = 0
+    _ultima = 0.0
 
     def generar_json(self, sistema: str, usuario: str, imagen: bytes | None = None, texto_imagen: str | None = None) -> dict:
         llave = hashlib.sha256(json.dumps([self.nombre, sistema, usuario,
@@ -33,10 +67,30 @@ class _ConCache:
         ruta = CACHE / f"{llave}.json"
         if ruta.exists():
             return json.loads(ruta.read_text(encoding="utf-8"))
-        respuesta = self._llamar(sistema, usuario, imagen)
+        if self.max_llamadas is not None and self.llamadas >= self.max_llamadas:
+            raise SinCuota(f"Se usaron las {self.max_llamadas} llamadas de esta corrida")
+        respuesta = self._llamar_con_reintentos(sistema, usuario, imagen)
         CACHE.mkdir(parents=True, exist_ok=True)
         ruta.write_text(json.dumps(respuesta, ensure_ascii=False), encoding="utf-8")
         return respuesta
+
+    def _llamar_con_reintentos(self, sistema, usuario, imagen, intentos: int = 3):
+        for intento in range(intentos + 1):
+            faltan = self.espera_min - (time.monotonic() - self._ultima)
+            if faltan > 0:
+                time.sleep(faltan)
+            self._ultima = time.monotonic()
+            self.llamadas += 1
+            try:
+                return self._llamar(sistema, usuario, imagen)
+            except Exception as e:
+                if not _es_limite(e):
+                    raise
+                if _es_cuota_diaria(e) or intento == intentos:
+                    raise SinCuota(f"El proveedor no acepta más llamadas: {str(e)[:200]}") from e
+                espera = _espera_sugerida(e)
+                print(f"  Límite por minuto del proveedor; espero {espera:.0f} s y reintento...")
+                time.sleep(espera)
 
     def _llamar(self, sistema, usuario, imagen):
         raise NotImplementedError
@@ -134,13 +188,20 @@ class ModeloComprometido:
         return datos
 
 
-def crear_modelo(nombre: str, tabla=None):
-    """'comprometido', 'gemini', 'gemini:gemini-2.5-pro', 'openai' u 'openai:gpt-4o'."""
+def crear_modelo(nombre: str, tabla=None, max_llamadas: int | None = None, espera_min: float = 0.0):
+    """'comprometido', 'gemini', 'gemini:<modelo>', 'openai' u 'openai:<modelo>'.
+
+    Sin versión, Gemini usa la variable GEMINI_MODELO (o gemini-2.5-flash). Conviene elegir el
+    modelo con más llamadas por día en https://aistudio.google.com/rate-limit
+    """
     proveedor, _, version = nombre.partition(":")
     if proveedor == "comprometido":
         return ModeloComprometido(tabla)
     if proveedor == "gemini":
-        return GeminiModelo(version or "gemini-2.5-flash")
-    if proveedor == "openai":
-        return OpenAIModelo(version or "gpt-4o-mini")
-    raise ValueError(f"Modelo desconocido: {nombre}")
+        modelo = GeminiModelo(version or os.environ.get("GEMINI_MODELO", "gemini-2.5-flash"))
+    elif proveedor == "openai":
+        modelo = OpenAIModelo(version or "gpt-4o-mini")
+    else:
+        raise ValueError(f"Modelo desconocido: {nombre}")
+    modelo.max_llamadas, modelo.espera_min = max_llamadas, espera_min
+    return modelo

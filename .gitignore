@@ -1,4 +1,5 @@
 resultados/
 datos/facturas/
 __pycache__/
+.env
 .pytest_cache/

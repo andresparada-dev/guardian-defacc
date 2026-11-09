@@ -17,6 +17,7 @@ from pathlib import Path
 
 from .compuerta import compuerta_respuesta, verificar_cifras
 from .hechos import TablaOficial
+from .llm import SinCuota
 from .numeros import extraer_numeros
 
 DATOS = Path(__file__).resolve().parents[1] / "datos"
@@ -79,6 +80,8 @@ def responder(pregunta: str, modelo, tabla: TablaOficial, defensas: set[str], mo
     try:
         salida = modelo.generar_json(sistema, usuario)
         texto_modelo = str(salida.get("texto", ""))
+    except SinCuota:
+        raise
     except Exception as e:  # JSON roto o error del proveedor: se registra, no se inventa nada
         texto_modelo = f"[error del modelo: {type(e).__name__}]"
     texto = texto_modelo

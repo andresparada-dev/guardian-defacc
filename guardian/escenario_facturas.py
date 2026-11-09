@@ -19,6 +19,7 @@ from pathlib import Path
 from pydantic import BaseModel, ValidationError
 
 from .compuerta import MODOS
+from .llm import SinCuota
 from .nit import nit_valido
 from .numeros import extraer_numeros
 
@@ -56,6 +57,8 @@ def extraer(ruta_png: Path, meta: dict, modelo, defensas: set[str]) -> dict:
         if getattr(modelo, "nombre", "").startswith("comprometido"):
             return modelo.generar_json(sistema, usuario, texto_imagen="\n".join(meta["texto_impreso"]))
         return modelo.generar_json(sistema, usuario, imagen=Path(ruta_png).read_bytes())
+    except SinCuota:
+        raise
     except Exception as e:
         return {"error": f"{type(e).__name__}: {e}"}
 

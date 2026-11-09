@@ -29,17 +29,35 @@ pip install -r requirements.txt
 python verificar_entorno.py                                  # revisa que todo esté instalado
 python scripts/generar_facturas.py                           # 30 facturas sintéticas en datos/facturas/
 python scripts/medir.py --modelo comprometido --ocr simulado # peor caso simulado
-python -m pytest -q tests                                    # 13 pruebas
+python -m pytest -q tests                                    # 18 pruebas
 ```
 
 El **modelo comprometido** es un simulador del peor caso: obedece todas las trampas. **No mide a la IA**; sirve para probar que la compuerta aguanta aunque el modelo esté totalmente manipulado y para trabajar sin gastar créditos. Sus resultados nunca se reportan como resultados de un modelo real.
 
-## Medición real (el sábado)
+## Medición real con el plan gratuito de Gemini
+
+Según la [documentación de AI Studio](https://aistudio.google.com/docs/rate-limits.md), los límites van **por proyecto, no por clave**, y la cuota diaria se reinicia a medianoche hora del Pacífico (3:00 a.m. en Bogotá). Antes de medir:
+
+1. Revisa tus límites reales en https://aistudio.google.com/rate-limit y elige el modelo con más llamadas por día que lea imágenes.
+2. Guárdalo como variable: `export GEMINI_MODELO="<nombre del modelo>"` (sin ella se usa `gemini-2.5-flash`).
+3. Prueba con 1 llamada: `python verificar_entorno.py --probar-api gemini`.
+
+La compuerta (D3) es código y **no gasta llamadas**. Solo gastan las variantes del prompt. Cada respuesta queda en caché, así que si la cuota se acaba, el mismo comando sigue otro día o con otra clave desde donde quedó.
+
+| Corrida | Comando | Llamadas nuevas |
+|---|---|---|
+| 1 · Sin defensa frente a solo la compuerta | `python scripts/medir.py --modelo gemini --preset minimo --n-ataques 5 --n-legitimas 3 --n-facturas 12 --max-llamadas 20` | 20 |
+| 2 · Suma D1+D2 sobre los mismos casos | igual, con `--preset medio` | 20 (las de la corrida 1 salen de la caché) |
+| 3 · Más casos | `--preset medio --n-ataques 10 --n-legitimas 5 --n-facturas 12 --max-llamadas 20` | 14 |
+
+Con unas 20 llamadas al día por proyecto: si los tres integrantes aportan una clave de **su propio** proyecto, las tres corridas caben el mismo sábado. Se corren en el mismo computador, cambiando `GEMINI_API_KEY` entre corridas, para que la caché se comparta. Si la corrida se detiene por cuota, `resumen.md` dice cuántos casos alcanzó a medir.
+
+## Medición sin límite de cuota
 
 ```bash
-export GEMINI_API_KEY="..."            # en Colab: os.environ["GEMINI_API_KEY"] = "..."
+export GEMINI_API_KEY="..."            # en Colab: usa los Secretos (llave en la barra izquierda) y userdata.get
 python verificar_entorno.py --probar-api gemini
-python scripts/medir.py --modelo gemini                 # o gemini:gemini-2.5-pro, openai, openai:gpt-4o
+python scripts/medir.py --modelo gemini --preset completo   # o gemini:<modelo>, openai, openai:gpt-4o
 ```
 
 Cada respuesta queda guardada en `resultados/cache_llm/`, así la misma consulta no se paga dos veces. Los resultados quedan en `resultados/<fecha>_<modelo>/` con `resumen.md`, `resumen.csv`, el detalle por caso y `grafico_ataques.png`.
