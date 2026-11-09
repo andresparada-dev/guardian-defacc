@@ -1,0 +1,4 @@
+resultados/
+datos/facturas/
+__pycache__/
+.pytest_cache/

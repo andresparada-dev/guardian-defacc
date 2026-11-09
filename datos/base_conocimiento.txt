@@ -1,0 +1,70 @@
+BASE DE CONOCIMIENTO · DataJam CENU 2026 · Ruta 2 · Bogotá D.C. · Grupo 07
+Fuente: DANE, Censo Económico Nacional Urbano (CENU) 2024, API del Visor Interactivo (structural/general) y Visor Interactivo. Año de referencia 2023. RESULTADOS PRELIMINARES. Consultado el 24 de octubre de 2026.
+
+1. QUÉ ES EL CENU
+El Censo Económico Nacional Urbano es el primer censo económico de Colombia desde 1990. Contó las unidades económicas visibles en las zonas urbanas de 1.102 municipios. La recolección fue entre 2024 y 2025 y el año de referencia de la información económica es 2023. El análisis usa el módulo de referencia sectorial 2023 (sectoral_reference_2023), que tiene 1.058.881 unidades en el país.
+
+2. MÉTODO Y REGLAS
+- Territorio: Bogotá D.C., código DIVIPOLA 11001. Los datos son del municipio completo; la API no publica cifras por localidad, UPZ o barrio.
+- Universo de Bogotá: 195.755 unidades. 195.745 tienen división CIIU visible; 10 no la muestran por reserva estadística. No se publican municipios con menos de 30 unidades.
+- Porcentajes sobre las unidades que respondieron. La respuesta se reporta aparte. En personal ocupado, el rango "0" corresponde a "Sin información reportada" (2,9 % en Bogotá) y se excluye del cálculo.
+- Rango bajo: ingreso 2023 de 0 a 10 millones de pesos, o de 1 a 5 personas ocupadas. Rango alto: más de 1.000 millones, o más de 50 personas.
+- Los rangos se leen como rangos: no se suman pesos ni personas.
+- Un rango bajo es una señal de posible subsistencia o informalidad, no una prueba.
+- Controles: la suma de los rangos coincide con el total de la API en cada consulta; el ingreso 2023 del país en la API es 2.421 billones de pesos, la misma cifra publicada por el DANE.
+
+3. CÓMO SE DISTRIBUYE LA ECONOMÍA DE BOGOTÁ
+- Comercio (divisiones 45, 46 y 47): 57,2 % de las unidades. Servicios: 35,0 %. Industria: 5,4 %. Transporte: 1,6 %. Construcción: 0,9 %.
+- Comercio al por menor (47): 92.335 unidades, 47,2 % del total.
+- Comidas y bebidas (56): 23.357 unidades, 11,9 %.
+- Comercio y reparación de vehículos y motos (45): 11.089 unidades, 5,7 %.
+- Las tres primeras divisiones suman 64,8 %. Las 10 divisiones más grandes suman 81,7 %.
+
+4. TOP 12 DIVISIONES CIIU (unidades · % ingreso 0–10 M · % ingreso >1.000 M · % 1–5 personas · % >50 personas · tipología)
+1. 47 Comercio al por menor · 92.335 · 20,1 · 3,3 · 95,2 · 0,3 · Señal de subsistencia
+2. 56 Servicios de comida y bebida · 23.357 · 14,6 · 2,5 · 84,9 · 0,6 · Intermedio
+3. 45 Comercio y reparación de vehículos y motos · 11.089 · 16,1 · 6,0 · 88,0 · 0,9 · Intermedio
+4. 96 Otros servicios personales (peluquería, lavandería) · 9.125 · 22,9 · 0,8 · 93,0 · 0,3 · Señal de subsistencia
+5. 46 Comercio al por mayor · 8.592 · 10,1 · 36,1 · 61,0 · 7,0 · Base para escalar
+6. 95 Reparación de computadores y efectos personales · 5.258 · 32,2 · 0,7 · 98,5 · 0,3 · Señal de subsistencia
+7. 86 Atención de la salud humana · 4.023 · 10,7 · 13,7 · 80,0 · 5,7 · Base para escalar
+8. 85 Educación · 2.361 · 15,3 · 16,7 · 49,4 · 10,0 · Base para escalar
+9. 14 Confección de prendas de vestir · 1.994 · 21,2 · 11,4 · 79,9 · 3,1 · Polarizado
+10. 25 Productos elaborados de metal · 1.801 · 12,1 · 14,0 · 73,7 · 2,3 · Base para escalar
+11. 10 Elaboración de productos alimenticios · 1.658 · 9,3 · 22,9 · 60,8 · 10,4 · Base para escalar
+12. 52 Almacenamiento y actividades complementarias · 1.621 · 17,6 · 19,0 · 73,7 · 10,0 · Base para escalar
+Respuesta de la división 47: 71,5 % en ingreso y 69,4 % en personal.
+Tipología (frente al promedio nacional de 23,8 % en ingreso bajo y 6,1 % en ingreso alto): "Base para escalar" = ingreso alto por encima de 6,1 % y bajo menor a 20 %; "Polarizado" = ingreso alto por encima de 6,1 % y bajo de 20 % o más; "Señal de subsistencia" = ingreso alto de 6,1 % o menos y bajo de 20 % o más; "Intermedio" = el resto.
+
+5. BOGOTÁ FRENTE AL PAÍS
+- % de unidades con ingreso 0–10 M: Bogotá 17,4 %, país 23,8 %.
+- % con ingreso de más de 1.000 M: Bogotá 10,7 %, país 6,1 %.
+- % con 1 a 5 personas: Bogotá 82,8 %, país 87,9 %.
+- % con más de 50 personas: Bogotá 3,7 %, país 2,0 %.
+- Ingreso promedio anual por unidad: Bogotá 7.422 millones, país 2.767 millones.
+- Ingresos totales 2023: Bogotá 1.180 billones de pesos, el 48,8 % del país (2.421 billones), con el 18,5 % de las unidades.
+- El 49,8 % de las unidades de Bogotá que reportaron ingreso está entre 0 y 50 millones al año (país: 61,2 %).
+
+6. DETALLE A 4 DÍGITOS (Visor Interactivo CENU, Bogotá)
+- 4781 Comercio al por menor de alimentos, bebidas y tabaco en puestos de venta móviles: 16.410 unidades (la actividad más grande de Bogotá; 17,8 % de la división 47).
+- 4711 Tiendas de barrio (establecimientos no especializados, principalmente alimentos): 13.114.
+- 5611 Expendio a la mesa de comidas preparadas: 9.049.
+- 4771 Prendas de vestir y accesorios: 7.328.
+- 9602 Peluquería y otros tratamientos de belleza: 6.817 (75 % de la división 96).
+- 5619 Otros tipos de expendio de comidas: 6.437.
+- 4520 Mantenimiento y reparación de vehículos: 6.314.
+
+7. RESPUESTA A LA PREGUNTA RETO
+- ¿Cómo se distribuye la actividad? Bogotá es una economía de comercio (57,2 %), muy concentrada en pocas actividades: las 10 divisiones más grandes reúnen el 81,7 % de las unidades.
+- ¿Dónde hay más oportunidades para emprender? En las divisiones con base para escalar: comercio al por mayor (36,1 % de unidades con ingresos de más de 1.000 millones), alimentos (22,9 %), almacenamiento (19,0 %), educación (16,7 %), productos de metal (14,0 %) y salud (13,7 %).
+- Señal de subsistencia en reparación (95), servicios personales (96) y comercio al por menor (47): juntas suman 106.718 unidades, el 54,5 % de Bogotá.
+
+8. RECOMENDACIÓN DE POLÍTICA LOCAL
+1) Formalizar sin ahogar: Régimen Simple, microcrédito como alternativa al "gota a gota", pagos digitales y certificación de oficios para las divisiones con señal de subsistencia, en especial ventas móviles, tiendas de barrio y peluquerías.
+2) Encadenar a los mayoristas (46) con las 92.335 unidades de comercio al por menor (47): programas de proveeduría, crédito de proveedor y compras agrupadas.
+3) Emprender con techo: capital semilla, compras públicas y crédito productivo en alimentos, almacenamiento, educación, metalmecánica y salud.
+
+9. DATOS QUE NO TENEMOS
+- Cifras por localidad, UPZ o barrio.
+- Información de unidades individuales (protegida por reserva estadística).
+- Datos de salarios comparables: la variable de salarios del Visor excluye el formulario PYMG (pequeñas, medianas y grandes empresas).
