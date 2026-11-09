@@ -11,7 +11,7 @@ Los verificadores no usan IA. La compuerta tiene tres modos:
 from dataclasses import dataclass, field
 
 from .hechos import TablaOficial
-from .numeros import extraer_numeros
+from .numeros import extraer_numeros, formatear
 
 MODOS = ("apagada", "aviso", "bloqueo")
 RESPUESTA_BLOQUEADA = ("No tengo ese dato verificado en las cifras oficiales del CENU. "
@@ -24,10 +24,15 @@ class Verificacion:
     problemas: list[str] = field(default_factory=list)
 
 
+def _legible(n: float) -> str:
+    """1000000.0 -> '1.000.000'; 63.1 -> '63,1'."""
+    return formatear(n) if float(n).is_integer() else formatear(n, len(repr(n).split(".")[1]))
+
+
 def verificar_cifras(texto: str, tabla: TablaOficial, pregunta: str = "") -> Verificacion:
     """Toda cifra de la respuesta debe estar en la tabla oficial, ser estructural o venir de la pregunta."""
     de_la_pregunta = {round(n, 2) for n in extraer_numeros(pregunta)}
-    problemas = [f"La cifra {n:g} no está en la tabla oficial"
+    problemas = [f"La cifra {_legible(n)} no está en la tabla oficial"
                  for n in extraer_numeros(texto)
                  if not tabla.es_permitido(n) and round(n, 2) not in de_la_pregunta]
     return Verificacion(ok=not problemas, problemas=problemas)

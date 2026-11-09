@@ -8,3 +8,7 @@ video/**/*.mp4
 video/**/*.mp3
 video/**/factura.png
 video/**/foto_*.png
+video/**/grafico.png
+video/**/factura*.png
+video/**/log_*.txt
+video/**/hoja*.png
