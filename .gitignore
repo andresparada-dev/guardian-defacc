@@ -3,3 +3,8 @@ datos/facturas/
 __pycache__/
 .env
 .pytest_cache/
+video/**/frames/
+video/**/*.mp4
+video/**/*.mp3
+video/**/factura.png
+video/**/foto_*.png
