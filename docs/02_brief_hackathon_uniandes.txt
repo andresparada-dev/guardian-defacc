@@ -1,0 +1,187 @@
+BRIEF: DEFENSIVE ACCELERATION HACKATHON (UNIANDES, 14 DE NOVIEMBRE DE 2026)
+Para analizar si otro proyecto puede aprovecharse en el hackatón
+Preparado el 8 de noviembre de 2026 a partir de la página oficial: https://aisafetycolombia.org/defacchackathon
+
+======================================================================
+CÓMO USAR ESTE TEXTO
+======================================================================
+Este texto describe un hackatón de seguridad de inteligencia artificial. Al final (sección 15) hay instrucciones para el agente que lo reciba: analizar el proyecto de ESTE repositorio y decir si, y cómo, se puede usar en alguno de los frentes del hackatón. Todo lo que está entre las secciones 1 y 13 viene de la página oficial; la sección 14 es el contexto de nuestro equipo.
+
+======================================================================
+1. DATOS GENERALES
+======================================================================
+- Nombre: Defensive Acceleration Hackathon (def/acc). Subtítulo: "Hackatón de IA para la defensa · Bogotá 2026".
+- Lema: "Un día, un reto: construir una defensa basada en inteligencia artificial contra una amenaza real."
+- Organizan: AI Safety Colombia e IEEE Computer Society Uniandes.
+- Con el apoyo de: Oracle Academy (detalles del patrocinio por anunciar).
+- Invita: Universidad de los Andes, Departamento de Ingeniería de Sistemas y Computación.
+- Fecha: sábado 14 de noviembre de 2026, de 8:00 a.m. a 8:00 p.m. (8 horas de trabajo).
+- Lugar: presencial, campus de la Universidad de los Andes, Bogotá. El edificio y el salón llegan por correo con la aceptación.
+- Formato: equipos de 2 a 4 personas, o postulación individual (los equipos se arman a las 8:30 a.m.).
+- Costo: gratis. Incluye almuerzo y credencial. Cupo limitado por aforo.
+- Premios: COP 2.000.000 en total. Primer puesto COP 1.000.000, segundo COP 500.000, tercer COP 500.000. Además, un premio especial por difusión en redes (monto por definir) para el mejor hilo técnico o reporte de divulgación sobre el prototipo.
+- Cierre de postulaciones: martes 10 de noviembre de 2026 a las 11:59 p.m. (hora de Bogotá). Formulario: https://aisafetycolombia.org/defacchackathon/aplicar
+
+======================================================================
+2. LA IDEA: ACELERACIÓN DEFENSIVA (DEF/ACC)
+======================================================================
+Los sistemas de IA avanzan rápido en capacidad y autonomía. La página destaca tres riesgos:
+- Agentes conectados a herramientas reales (terminales, archivos, navegadores o servidores MCP) que pueden ser secuestrados con inyección indirecta de instrucciones.
+- Modelos cada vez más capaces que podrían ocultar intenciones o sabotear código, lo que plantea cómo supervisarlos.
+- Ciberataques automatizados y suplantación sintética (voces y videos falsos) que ponen a prueba la infraestructura digital y la confianza pública.
+
+La aceleración defensiva propone construir y validar defensas técnicas e institucionales que inclinen la balanza a favor de quien defiende: arquitecturas de agentes resistentes, protocolos de control y monitoreo de IA, ciberdefensa automatizada, verificación formal de software, autenticidad criptográfica y estándares para proteger los pesos de los modelos y la infraestructura crítica.
+
+Relevancia para Colombia según la página: ya hay incidentes contra entidades públicas e infraestructura crítica, suplantación con voces clonadas por WhatsApp y despliegues apresurados de agentes autónomos sin controles.
+
+======================================================================
+3. EL RETO
+======================================================================
+Construir y evaluar, en 8 horas de trabajo continuo, un prototipo defensivo o un estándar verificable dentro de uno de los 5 frentes temáticos (sección 5). También se puede proponer un reto afín.
+
+Ciclo técnico que espera la organización:
+1. Vector de amenaza: definir un riesgo o vulnerabilidad real en modelos o agentes.
+2. Prototipo defensivo: construir código ejecutable que mitigue o contenga ese vector.
+3. Evaluación empírica: medir la efectividad con pruebas o datos reproducibles.
+4. Verificación y seguridad: comprobar que la defensa no cree riesgos o sesgos nuevos.
+
+Las 4 preguntas que debe responder cada entrega:
+1. El vector de riesgo: qué ataque, falla de control o vulnerabilidad se busca mitigar, definido con precisión.
+2. El mecanismo defensivo: el prototipo, monitor, verificador formal o estándar técnico-regulatorio que contiene la amenaza.
+3. La validación empírica: efectividad medida con benchmarks, casos de prueba o escenarios concretos (ataques neutralizados, tasa de detección, falsos positivos, invariantes verificados).
+4. Los límites y el riesgo dual: dónde falla la defensa, documentado con honestidad, y la verificación de que el trabajo no facilita usos ofensivos.
+
+======================================================================
+4. QUIÉN PUEDE PARTICIPAR
+======================================================================
+- Estudiantes universitarios de cualquier semestre y carrera, investigadores y profesionales de la industria o del sector público.
+- No hace falta experiencia previa en seguridad de IA. Cada frente tiene puntos de partida accesibles (Python básico, suites de evaluación guiadas) y el frente 5 no requiere programar.
+
+======================================================================
+5. LOS 5 FRENTES TEMÁTICOS
+======================================================================
+
+FRENTE 1. SEGURIDAD DE AGENTES Y DEFENSA CONTRA INYECCIÓN DE INSTRUCCIONES
+- Problema: cuando la IA pasa de conversar a ejecutar acciones con herramientas reales (archivos, navegadores, terminales, servidores MCP), una instrucción oculta en un documento o una página web puede secuestrar al agente (inyección indirecta) para sacar información o ejecutar comandos no autorizados.
+- Para empezar: construir un auditor o filtro que inspeccione los manifiestos y las llamadas a herramientas MCP para detectar instrucciones maliciosas ocultas o permisos excesivos, evaluado con el benchmark MCPTox.
+- Con experiencia: diseñar una arquitectura defensiva (separación de privilegios, aislamiento de contexto o controles sobre el flujo de datos) y medir cuántos ataques neutraliza sin dañar las tareas legítimas, con AgentDojo o AgentDyn.
+- Recursos: AgentDojo (https://github.com/ethz-spylab/agentdojo), MCPTox (https://github.com/zhiqiangwang4/MCPTox-Benchmark), AgentDyn (https://github.com/SaFo-Lab/AgentDyn).
+
+FRENTE 2. CONTROL DE IA, MONITOREO Y DETECCIÓN DE SABOTAJE
+- Problema: si un modelo o agente actúa de forma engañosa, oculta intenciones en su razonamiento o inserta puertas traseras sutiles en el código, ¿cómo se diseñan protocolos que lo detecten a tiempo? (línea de trabajo de Redwood Research y el UK AISI).
+- Para empezar: escribir con el framework Inspect (UK AISI) una suite que detecte cuándo un modelo intenta evadir límites de seguridad, ocultar capacidades o engañar al evaluador.
+- Con experiencia: implementar un monitor en ControlArena (entornos Bash o Apps) o con OpenAI Monitorability Evals que audite las acciones y el razonamiento de un agente y detecte sabotaje con pocos falsos positivos.
+- Recursos: ControlArena (https://github.com/UKGovernmentBEIS/control-arena), Inspect (https://inspect.aisi.org.uk/), OpenAI Monitorability Evals (https://github.com/openai/monitorability-evals).
+
+FRENTE 3. CIBERDEFENSA AUTOMATIZADA Y VERIFICACIÓN FORMAL DE SOFTWARE
+- Problema: los modelos de frontera abaratan encontrar y explotar vulnerabilidades. Se necesita IA para detectar fallas, generar parches seguros y demostrar matemáticamente que el código crítico es correcto.
+- Para empezar: un flujo automatizado que analice código inseguro, identifique la vulnerabilidad y genere un parche verificable, evaluado con CyberSecEval (Purple Llama) o CTIBench.
+- Con experiencia: usar modelos de lenguaje para escribir anotaciones e invariantes formales que demuestren que un programa no tiene errores críticos, con Dafny y el benchmark DafnyBench.
+- Recursos: DafnyBench (https://github.com/sun-wendy/DafnyBench), CyberSecEval / Purple Llama (https://github.com/meta-llama/PurpleLlama), CTIBench (https://huggingface.co/datasets/AI4Sec/cti-bench).
+
+FRENTE 4. DEFENSA EPISTÉMICA, AUTENTICIDAD CRIPTOGRÁFICA Y DETECCIÓN DE SUPLANTACIÓN
+- Problema: la IA reduce casi a cero el costo de clonar voces en tiempo real, fabricar evidencia sintética y lanzar campañas de manipulación. Se busca proteger la confianza pública con pruebas criptográficas de origen y con detección que funcione en canales reales.
+- Para empezar: implementar un verificador de procedencia criptográfica con el estándar C2PA (librería c2pa-python) que certifique el origen de archivos multimedia, o un detector de phishing calibrado con el dataset SpaPhish.
+- Con experiencia: evaluar cuánto pierden los detectores de voz sintética de última generación (como AASIST) con la compresión real de audio de WhatsApp, usando el dataset In-the-Wild, y construir una mitigación.
+- Recursos: c2pa-python (https://github.com/contentauth/c2pa-python), AASIST (https://github.com/clovaai/aasist), In-the-Wild (https://huggingface.co/datasets/mueller91/In-The-Wild), SpaPhish (https://data.mendeley.com/datasets/hz2d6gz7pc).
+
+FRENTE 5. SEGURIDAD DE INFRAESTRUCTURA DE IA Y GOBERNANZA DEFENSIVA (SIN CÓDIGO)
+- Problema: evitar el robo de los pesos de modelos de frontera y garantizar que el despliegue de sistemas autónomos no comprometa servicios esenciales exige estándares técnicos e institucionales rigurosos. Este frente no exige programar.
+- Para empezar: un modelado formal de amenazas según los niveles de seguridad SL1 a SL5 de RAND (Securing AI Model Weights), o un protocolo de respuesta a incidentes de IA.
+- Con experiencia: un estándar técnico y regulatorio verificable con los requisitos mínimos de contención, auditoría y líneas rojas que entidades públicas o infraestructura crítica deberían exigir antes de desplegar agentes autónomos.
+- Recursos: RAND Securing Model Weights (https://www.rand.org/pubs/research_reports/RRA2849-1.html), estándar SL5 (https://sl5.org/sl5-standard).
+
+======================================================================
+6. REGLAS DE SEGURIDAD Y USO RESPONSABLE (ESTRICTAS)
+======================================================================
+1. Prohibido atacar, escanear o probar sistemas reales de terceros sin autorización escrita. Es delito según la Ley 1273 de 2009. Todo se trabaja en laboratorio, con benchmarks públicos o con datos sintéticos.
+2. No se publican exploits funcionales, malware ni herramientas pensadas sobre todo para atacar. Si un equipo descubre una vulnerabilidad real en una librería existente, la reporta en privado y la omite de su entrega pública.
+3. Datos personales: las voces, rostros o correos deben venir de datasets públicos anonimizados o ser sintéticos.
+4. Atribución y transparencia: todo código, dataset, librería o fragmento generado con IA se documenta y se cita en la entrega.
+
+======================================================================
+7. ENTREGABLES (HORA LÍMITE: SÁBADO 14 DE NOVIEMBRE, 5:00 P.M.)
+======================================================================
+1. Enlace a un repositorio ejecutable (GitHub o Google Colab) con el código documentado (frentes 1 a 4), o al documento de modelado de amenazas o estándar verificable (frente 5).
+2. Ficha técnica de una página, con la plantilla oficial: vector de amenaza, arquitectura o protocolo defensivo, metodología de evaluación, resultados cuantitativos, límites y análisis de riesgo dual.
+3. Opcional: video de hasta 2 minutos mostrando el prototipo o protocolo funcionando.
+
+======================================================================
+8. CRITERIOS DE EVALUACIÓN (CADA PROYECTO LO CALIFICAN AL MENOS 2 JURADOS)
+======================================================================
+- Funcionamiento del prototipo y rigor técnico: 30 %. ¿Corre bien y demuestra una defensa funcional? En el frente 5, ¿el estándar o el modelado es técnico y accionable?
+- Evidencia empírica y evaluación: 25 %. ¿Se evaluó con benchmarks, datasets o escenarios concretos? ¿Los resultados respaldan lo que se afirma?
+- Relevancia en aceleración defensiva: 20 %. ¿Ataca un riesgo real de seguridad de IA y le da ventaja neta a quien defiende?
+- Uso responsable y límites: 15 %. ¿Se reconocen con honestidad las limitaciones y se mitiga el riesgo de uso dual o malicioso?
+- Claridad y síntesis: 10 %. ¿La ficha y la explicación son claras, concisas y fáciles de evaluar?
+
+======================================================================
+9. CÓMO SE ELIGEN LOS GANADORES
+======================================================================
+A las 7:00 p.m., tras la deliberación, el jurado anuncia los 5 mejores proyectos del día. Cada finalista hace un pitch en vivo de 4 minutos ante todo el salón, y a las 7:25 p.m. se anuncian los tres primeros puestos. No hay premios por frente: todos los proyectos compiten juntos.
+
+======================================================================
+10. JURADOS CONFIRMADOS (HABRÁ MÁS)
+======================================================================
+- Christian Urcuqui (TryHackMe, Universidad Icesi). Investigador de ciberseguridad e IA, docente y coautor de tres libros de ciberseguridad. Publicó AgentBreak (https://github.com/urcuqui/AgentBreak), un laboratorio de inyección indirecta de instrucciones en agentes con modelos de lenguaje. La tesis de AgentBreak: los controles deterministas fuera del modelo (lista de herramientas permitidas, validación de argumentos, control de destinos, aprobación humana) impiden que una manipulación del razonamiento se convierta en una acción privilegiada; cada ataque exitoso se vuelve una prueba de regresión.
+- Antonio Badilla-Olivas (SPAR, CRSS). Construye entornos de red-teaming donde ataques y monitores evolucionan juntos. Exprofesor de la Universidad de Costa Rica.
+- Carlos Gorostiza Ibáñez (SPAR, UANL). Construye un banco de pruebas para medir cómo negocian los agentes de IA, cuándo fracasan los acuerdos y cómo escala una crisis entre ellos.
+
+======================================================================
+11. AGENDA Y FECHAS CLAVE
+======================================================================
+Fechas: apertura de postulaciones el jueves 5 de noviembre; cierre el martes 10 de noviembre a las 11:59 p.m.; correos de confirmación antes del evento; hackatón el sábado 14 de noviembre.
+Agenda del sábado 14:
+- 8:00 a.m. Registro e ingreso al campus (portería de Uniandes).
+- 8:30 a.m. Apertura: frentes, criterios y conformación de equipos.
+- 9:00 a.m. Inicio del sprint de 8 horas.
+- 5:00 p.m. Cierre de entregas (repositorio y ficha técnica).
+- 7:00 p.m. Pitch de los finalistas y premiación.
+
+======================================================================
+12. PREGUNTAS FRECUENTES (RESUMEN)
+======================================================================
+- Se puede participar sin equipo previo: en la apertura hay una dinámica para armar equipos.
+- No tiene costo.
+- Está pensado para todos los niveles; el frente 5 no requiere programar.
+- Hay que llevar portátil con cargador, documento de identidad original y termo para agua.
+- Los proyectos se entregan a las 5:00 p.m.; los 5 mejores presentan 4 minutos a las 7:00 p.m.
+
+======================================================================
+13. FORMULARIO DE POSTULACIÓN (CADA INTEGRANTE LLENA EL SUYO)
+======================================================================
+Pide: nombres, correo, WhatsApp, tipo y número de documento (para el ingreso al campus), universidad o empresa, carrera o cargo, LinkedIn (obligatorio), GitHub (opcional), nivel de experiencia con IA y programación (principiante, intermedio o avanzado), si se postula solo o en equipo, el frente que más le interesa (se puede cambiar el día del evento) y un texto de hasta 1.500 caracteres: "¿Qué problema de seguridad o defensa con IA te gustaría atacar, y por qué?". La organización dice que entre más claro sea ese texto, más probabilidades hay de ser aceptado.
+
+======================================================================
+14. CONTEXTO DE NUESTRO EQUIPO
+======================================================================
+Equipo de 3 personas:
+- Un profesor: ingeniero electrónico y magíster en Inteligencia Artificial de la Universidad de los Andes. Tiene experiencia en desarrollo de software, modelos eficientes para dispositivos de bajo costo (edge AI) y agentes conversacionales.
+- Un integrante con conocimientos generales básicos.
+- Yo: perfil de datos y analítica, con programación de nivel intermedio.
+
+Trabajo previo que ya tenemos (proyecto ganador del reto del DANE sobre el Censo Económico Nacional Urbano):
+- Un agente de voz con IA (ElevenLabs) que responde preguntas sobre la economía de Bogotá con una base de conocimiento y reglas: no inventar cifras, no dar datos por localidad, decir cuándo no tiene un dato.
+- Una tabla de cifras oficiales verificadas contra la API del DANE, notebooks de Colab reproducibles y validadores.
+
+Plan actual (todavía abierto):
+- Opción principal, frente 1: un "guardián de cifras oficiales". Es una réplica del agente del DANE atacada con instrucciones ocultas en sus documentos, con tres defensas: el contenido recuperado se trata como datos y no como instrucciones; el agente solo hace consultas aprobadas de antemano; y un verificador fuera del modelo bloquea toda cifra que no esté en la tabla oficial. Se mide la tasa de éxito de los ataques con y sin cada defensa.
+- Alternativas: frente 4, detector de voces clonadas en español colombiano robusto a la compresión de WhatsApp, con el dataset HABLA (más de 22.000 audios reales y 58.000 falsos, acentos latinoamericanos, licencia CC BY 4.0, creado en el Departamento de Ingeniería de Sistemas de Uniandes); frente 4, detector de phishing en español con SpaPhish (1.395 correos, 664 legítimos y 731 phishing, con anotaciones de técnicas de persuasión); frente 5, estándar verificable para que entidades públicas desplieguen agentes con datos oficiales.
+- Marco legal útil: Ley 1273 de 2009 (delitos informáticos), Ley 1581 de 2012 (datos personales), Ley 79 de 1993 (reserva estadística), Ley 2502 de 2025 (agrava la suplantación con IA, incluidas las grabaciones de voz falsas) y CONPES 4144 de 2025 (política nacional de IA).
+
+======================================================================
+15. INSTRUCCIONES PARA EL AGENTE QUE RECIBE ESTE TEXTO
+======================================================================
+Analiza TODO el proyecto de este repositorio (código, datos, documentación, modelos, integraciones) y compáralo con cada parte de este brief. Queremos saber si hay algún punto donde ese proyecto nos sirva en el hackatón, ya sea como base del prototipo, como pieza de la defensa, como fuente de datos o casos de prueba, como herramienta de evaluación o como caso de estudio.
+
+Responde en español y en este orden:
+1. Resumen del proyecto en 3 a 5 líneas: qué hace, con qué tecnologías y qué datos usa.
+2. Encaje por frente (1 a 5): para cada frente, di si el proyecto encaja (alto, medio, bajo o nada) y por qué, nombrando los archivos o módulos concretos que se reutilizarían.
+3. Propuestas concretas (máximo 3): para cada una, describe la amenaza que se ataca, la defensa que se construye con el proyecto, cómo se mide (métrica y datos) y qué parte del proyecto se reutiliza tal cual y qué hay que construir nuevo.
+4. Combinación con nuestro plan actual: ¿el proyecto complementa al "guardián de cifras oficiales", a las voces clonadas, al phishing o al estándar? ¿O es mejor como proyecto independiente?
+5. Factibilidad en 8 horas con un equipo de 3 (un líder técnico fuerte y dos perfiles intermedios): qué se puede tener funcionando a la 1:00 p.m. y qué en la tarde.
+6. Cumplimiento de las reglas: confirma que la propuesta no ataca sistemas reales de terceros, no usa datos personales reales sin anonimizar, no publica herramientas ofensivas y cita todo lo generado con IA. Si el proyecto toca datos personales o sistemas de terceros, dilo y propone cómo usar datos sintéticos o públicos.
+7. Qué preparar antes del sábado: dependencias, datos, claves de API y pruebas mínimas.
+8. Riesgos y límites honestos del proyecto para este hackatón.
+
+No inventes capacidades que el proyecto no tenga. Si el proyecto no encaja en ningún frente, dilo claramente y explica por qué.
