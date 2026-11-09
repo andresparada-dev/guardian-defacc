@@ -21,6 +21,19 @@ medidor: corre todos los casos en cada configuración y cuenta % de ataques que 
 
 La compuerta tiene tres modos: `apagada` (línea base), `aviso` (sale con advertencia, como el verificador jurídico de SAPHEN) y `bloqueo` (se reemplaza la respuesta o la factura va a revisión humana, como Vigía en SAPHEN).
 
+## Dónde ejecutarlo
+
+| Dónde | Para qué | Cómo |
+|---|---|---|
+| **Google Colab** (recomendado) | Correr todo desde el navegador, sin instalar nada | Abre `Guardian_Colab.ipynb` en [colab.research.google.com](https://colab.research.google.com) (*Archivo → Subir notebook*) y ejecuta las celdas en orden. Te pide subir `guardian_defacc.zip` o usa un token de GitHub guardado en los Secretos. |
+| **GitHub · pestaña Actions** | Ver si las pruebas pasan después de cada cambio | Cada push corre las pruebas y la medición del peor caso. ✓ verde = todo bien. El gráfico queda en *Artifacts* → `resultados-peor-caso`. |
+| **Tu computador** | Trabajar el sábado con el equipo | Instala Python 3.11 o superior y corre los comandos de abajo en la terminal (Windows: PowerShell; Mac: Terminal). |
+
+Los resultados de cada medición quedan en `resultados/<fecha>_<modelo>/`:
+- `resumen.md`: la tabla de resultados.
+- `grafico_ataques.png`: el gráfico para el pitch.
+- `detalle_cifras.csv` y `detalle_facturas.csv`: caso por caso, con lo que respondió el modelo y lo que decidió la compuerta.
+
 ## Arranque rápido (sin internet ni créditos)
 
 ```bash

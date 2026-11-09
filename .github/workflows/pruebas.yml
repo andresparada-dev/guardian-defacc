@@ -1,0 +1,28 @@
+name: Pruebas del guardián
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Pruebas automáticas
+        run: python -m pytest -q tests
+      - name: Medición con el peor caso simulado (sin internet ni claves)
+        run: |
+          python scripts/generar_facturas.py
+          python scripts/medir.py --modelo comprometido --ocr simulado
+      - name: Guardar resultados y gráfico
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-peor-caso
+          path: resultados/
