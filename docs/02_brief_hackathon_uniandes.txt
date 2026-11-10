@@ -12,7 +12,8 @@ Este texto describe un hackatón de seguridad de inteligencia artificial. Al fin
 ======================================================================
 - Ahora son 6 frentes: se sumó el frente 6, riesgos multiagente (sección 5).
 - La rúbrica es otra: 3 criterios con el mismo peso, de 1 a 5 cada uno (sección 8). El uso responsable dejó de puntuar y pasó a ser requisito para ganar premio.
-- Hay un cuarto jurado: Jose Felipe Duarte (LRC, UTP) (sección 10).
+- Hay dos jurados nuevos: Jose Felipe Duarte (LRC, UTP) y Jairo Torregrosa (Mercado Libre), que además es mentor (sección 10).
+- Oracle Academy ya dijo qué da: un certificado para los participantes y acceso a herramientas de Oracle Academy para desarrollar el proyecto (sección 1).
 - Ya no aparece la opción de "proponer un reto afín": el proyecto debe caber en uno de los 6 frentes.
 - Ya no aparece el premio especial por difusión en redes.
 - El formulario define los niveles de experiencia y suma el frente 6, la opción "todavía no sé", restricciones alimentarias y una casilla para confirmar que se puede estar todo el día (sección 13).
@@ -24,7 +25,7 @@ Este texto describe un hackatón de seguridad de inteligencia artificial. Al fin
 - Nombre: Defensive Acceleration Hackathon (def/acc). Subtítulo: "Hackatón de IA para la defensa · Bogotá 2026".
 - Lema: "Un día, un reto: construir una defensa basada en inteligencia artificial contra una amenaza real."
 - Organizan: AI Safety Colombia e IEEE Computer Society Uniandes.
-- Con el apoyo de: Oracle Academy (detalles del patrocinio por anunciar).
+- Con el apoyo de: Oracle Academy. Según la página (10 de noviembre): "los participantes reciben un certificado y acceso a herramientas de Oracle Academy para desarrollar su proyecto. Muy pronto, más detalles."
 - Invita: Universidad de los Andes, Departamento de Ingeniería de Sistemas y Computación.
 - Fecha: sábado 14 de noviembre de 2026, de 8:00 a.m. a 8:00 p.m. (8 horas de trabajo).
 - Lugar: presencial, campus de la Universidad de los Andes, Bogotá. El edificio y el salón llegan por correo con la aceptación.
@@ -158,6 +159,7 @@ A las 7:00 p.m., tras la deliberación, el jurado anuncia los 5 mejores proyecto
 - Antonio Badilla-Olivas (SPAR, CRSS). Construye entornos de red-teaming donde ataques y monitores evolucionan juntos. Exprofesor de la Universidad de Costa Rica.
 - Carlos Gorostiza Ibáñez (SPAR, UANL). Construye un banco de pruebas para medir cómo negocian los agentes de IA, cuándo fracasan los acuerdos y cómo escala una crisis entre ellos.
 - Jose Felipe Duarte (LRC, Universidad Tecnológica de Pereira). Investigador en la UTP e ingeniero de IA en el LRC. Primer autor de PsychoAlign, una arquitectura de alineación con tres agentes que negocian, presentada como oral en LatinX in AI @ ICML 2026. (Nuevo, 10 de noviembre.)
+- Jairo Torregrosa (Mercado Libre), juez y mentor. Sr AI Research Engineer en Mercado Libre (GenAI Engineering Research) y Claude Community Ambassador en Bogotá, donde da talleres de agentes con Agent SDK y Managed Agents. Publica herramientas de agentes y evals abiertos. (Nuevo, 10 de noviembre.)
 
 ======================================================================
 11. AGENDA Y FECHAS CLAVE
