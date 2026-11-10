@@ -55,6 +55,15 @@ Según la [documentación de AI Studio](https://aistudio.google.com/docs/rate-li
 2. Guárdalo como variable: `export GEMINI_MODELO="<nombre del modelo>"`. Sin ella se usa `gemini-3.5-flash-lite`. Los modelos gratuitos que leen imágenes son `gemini-3.5-flash-lite`, `gemini-3.1-flash-lite` y `gemini-3.8-flash` (el más capaz). Los de razonamiento avanzado son de pago.
 3. Prueba con 1 llamada: `python verificar_entorno.py --probar-api gemini`.
 
+**Cuota de este proyecto (panel de AI Studio, 10 de noviembre de 2026):** Gemini 3.5 Flash Lite y Gemini 3.1 Flash Lite, 500 llamadas al día y 15 por minuto cada uno; Gemini 3.8 Flash, 20 al día y 5 por minuto. La medición completa usa unas 135 llamadas, así que cabe con cualquiera de los dos Flash Lite:
+
+```bash
+python scripts/medir.py --modelo gemini:gemini-3.5-flash-lite --preset completo --espera 4.5 --max-llamadas 150
+python scripts/medir.py --modelo gemini:gemini-3.1-flash-lite --preset completo --espera 4.5 --max-llamadas 150
+```
+
+Si la cuota es menor, usa el plan de 20 llamadas de abajo.
+
 La compuerta (D3) es código y **no gasta llamadas**. Solo gastan las variantes del prompt. Cada respuesta queda en caché, así que si la cuota se acaba, el mismo comando sigue otro día o con otra clave desde donde quedó.
 
 | Corrida | Comando | Llamadas nuevas |
