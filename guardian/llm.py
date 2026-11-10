@@ -99,7 +99,7 @@ class _ConCache:
 class GeminiModelo(_ConCache):
     """Gemini con salida JSON. Lee la clave de GEMINI_API_KEY o GOOGLE_API_KEY."""
 
-    def __init__(self, modelo: str = "gemini-2.5-flash"):
+    def __init__(self, modelo: str = "gemini-3.5-flash-lite"):
         from google import genai
         self.nombre = modelo
         self._cliente = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
@@ -191,14 +191,14 @@ class ModeloComprometido:
 def crear_modelo(nombre: str, tabla=None, max_llamadas: int | None = None, espera_min: float = 0.0):
     """'comprometido', 'gemini', 'gemini:<modelo>', 'openai' u 'openai:<modelo>'.
 
-    Sin versión, Gemini usa la variable GEMINI_MODELO (o gemini-2.5-flash). Conviene elegir el
+    Sin versión, Gemini usa la variable GEMINI_MODELO (o gemini-3.5-flash-lite, gratis y con imágenes). Conviene elegir el
     modelo con más llamadas por día en https://aistudio.google.com/rate-limit
     """
     proveedor, _, version = nombre.partition(":")
     if proveedor == "comprometido":
         return ModeloComprometido(tabla)
     if proveedor == "gemini":
-        modelo = GeminiModelo(version or os.environ.get("GEMINI_MODELO", "gemini-2.5-flash"))
+        modelo = GeminiModelo(version or os.environ.get("GEMINI_MODELO", "gemini-3.5-flash-lite"))
     elif proveedor == "openai":
         modelo = OpenAIModelo(version or "gpt-4o-mini")
     else:

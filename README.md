@@ -52,7 +52,7 @@ El **modelo comprometido** es un simulador del peor caso: obedece todas las tram
 Según la [documentación de AI Studio](https://aistudio.google.com/docs/rate-limits.md), los límites van **por proyecto, no por clave**, y la cuota diaria se reinicia a medianoche hora del Pacífico (3:00 a.m. en Bogotá). Antes de medir:
 
 1. Revisa tus límites reales en https://aistudio.google.com/rate-limit y elige el modelo con más llamadas por día que lea imágenes.
-2. Guárdalo como variable: `export GEMINI_MODELO="<nombre del modelo>"` (sin ella se usa `gemini-2.5-flash`).
+2. Guárdalo como variable: `export GEMINI_MODELO="<nombre del modelo>"`. Sin ella se usa `gemini-3.5-flash-lite`. Los modelos gratuitos que leen imágenes son `gemini-3.5-flash-lite`, `gemini-3.1-flash-lite` y `gemini-3.8-flash` (el más capaz). Los de razonamiento avanzado son de pago.
 3. Prueba con 1 llamada: `python verificar_entorno.py --probar-api gemini`.
 
 La compuerta (D3) es código y **no gasta llamadas**. Solo gastan las variantes del prompt. Cada respuesta queda en caché, así que si la cuota se acaba, el mismo comando sigue otro día o con otra clave desde donde quedó.
@@ -136,6 +136,7 @@ Con el modelo comprometido, D1 y D2 no cambian nada, porque el simulador las ign
 
 - Todo corre en local, con datos públicos del DANE y facturas sintéticas marcadas como "SIN VALIDEZ". Nunca se prueba contra sistemas reales: ni la API del DANE, ni ElevenLabs, ni SAPHEN en producción.
 - Los ataques se publican como casos de prueba, no como guía ofensiva.
+- **Privacidad con el plan gratuito de Gemini:** Google usa el contenido para mejorar sus productos ([precios y condiciones](https://aistudio.google.com/docs/pricing)). Por eso solo se envían datos públicos del DANE y facturas sintéticas; nunca documentos reales de una empresa ni datos personales.
 - Se declara todo el código, los datos y lo generado con IA.
 
 ## Qué se preparó antes del evento

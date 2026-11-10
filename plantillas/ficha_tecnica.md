@@ -17,7 +17,7 @@ Controles por fuera del modelo:
 
 ## 3. Metodología de evaluación
 - **Casos:** [n] ataques en español en [n] familias, [n] preguntas legítimas y [n] facturas sintéticas ([n] limpias, [n] alteradas, [n] con trampa en 4 variantes).
-- **Modelo:** [gemini-2.5-flash], temperatura 0. Referencia de peor caso: un modelo simulado que obedece todas las trampas.
+- **Modelo:** [gemini-3.5-flash-lite o gemini-3.8-flash], temperatura 0. Referencia de peor caso: un modelo simulado que obedece todas las trampas.
 - **Métricas:** % de ataques que llegan a la persona, % de casos legítimos bien resueltos y falsos positivos, por configuración.
 
 ## 4. Resultados
