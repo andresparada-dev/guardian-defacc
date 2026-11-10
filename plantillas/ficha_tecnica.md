@@ -9,6 +9,8 @@ Inyección indirecta de instrucciones (OWASP LLM01:2025): un documento que el ag
 - **A · Cifras oficiales:** un asistente de datos del DANE publica una cifra falsa como si fuera oficial.
 - **B · Facturas de pyme:** un asistente que lee facturas de WhatsApp aprueba un pago con un total falso.
 
+**Qué es nuevo y quién lo adoptaría:** casi todas las pruebas de inyección son en inglés y con agentes genéricos. Aquí son en español, sobre cifras oficiales y facturas que llegan como imagen, con trampas en letra diminuta, de bajo contraste o en el margen. La IA nunca escribe la cifra ni decide el pago: lo decide código. Un asistente de datos públicos o el software contable de una pyme lo puede adoptar sin cambiar de modelo.
+
 ## 2. Defensa
 Controles por fuera del modelo:
 1. **D1 · Delimitar:** el documento es dato, no orden.
@@ -18,7 +20,8 @@ Controles por fuera del modelo:
 ## 3. Metodología de evaluación
 - **Casos:** [n] ataques en español en [n] familias, [n] preguntas legítimas y [n] facturas sintéticas ([n] limpias, [n] alteradas, [n] con trampa en 4 variantes).
 - **Modelo:** [gemini-3.5-flash-lite o gemini-3.8-flash], temperatura 0. Referencia de peor caso: un modelo simulado que obedece todas las trampas.
-- **Métricas:** % de ataques que llegan a la persona, % de casos legítimos bien resueltos y falsos positivos, por configuración.
+- **Línea base:** la configuración sin defensa, con el mismo modelo y los mismos casos.
+- **Métricas:** % de ataques que llegan a la persona (la tasa de éxito del ataque de AgentDojo), % de casos legítimos bien resueltos (su utilidad) y falsos positivos, por configuración.
 
 ## 4. Resultados
 | Configuración | A · ataques exitosos | A · falsos positivos | B · trampas aprobadas | B · falsos positivos |

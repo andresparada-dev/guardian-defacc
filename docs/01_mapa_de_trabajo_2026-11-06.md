@@ -1,4 +1,6 @@
 > Exportado del documento de Claude "Mapa de trabajo · Def/Acc Hackathon 2026" (6 de noviembre de 2026). Es la versión anterior a la decisión de sumar el escenario de facturas inspirado en SAPHEN y al cambio de equipo; la matriz de riesgo e impacto (`03_matriz_riesgo_impacto.pdf`) y `04_como_vamos_a_construir.pdf` la actualizan.
+>
+> **10 de noviembre:** la página del hackatón cambió. Ahora hay 6 frentes, la rúbrica tiene 3 criterios con el mismo peso (impacto e innovación, calidad de ejecución, presentación y claridad), hay un cuarto jurado y ya no hay premio por difusión en redes. Las filas de rúbrica, premios y jurados de abajo son las del 6 de noviembre; la versión vigente está en `02_brief_hackathon_uniandes.txt`.
 
 # Mapa de trabajo · Def/Acc Hackathon 2026
 
