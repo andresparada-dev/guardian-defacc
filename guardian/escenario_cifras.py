@@ -5,6 +5,8 @@ envenenado) -> el modelo propone una respuesta en JSON -> el código pone las ci
 (defensa 2) -> el verificador y la compuerta deciden qué sale (defensa 3).
 
 Defensas que se pueden prender:
+- "firmas": antes de recuperar, los documentos con firmas de ataque conocidas quedan en cuarentena
+  y la IA no los ve (como un IDS o un antivirus; ver firmas.py).
 - "d1": los documentos van delimitados y marcados como datos, no como órdenes.
 - "d2": el modelo no escribe cifras; cita claves oficiales entre llaves y el código pone el valor.
 - La defensa 3 es el modo de la compuerta: "apagada", "aviso" o "bloqueo".
@@ -16,6 +18,7 @@ import unicodedata
 from pathlib import Path
 
 from .compuerta import compuerta_respuesta, verificar_cifras
+from .firmas import revisar_documentos
 from .hechos import TablaOficial
 from .llm import SinCuota
 from .numeros import extraer_numeros
@@ -75,6 +78,9 @@ def responder(pregunta: str, modelo, tabla: TablaOficial, defensas: set[str], mo
               documentos_extra: list[dict] | None = None, fragmentos: list[dict] | None = None) -> dict:
     """Corre el agente completo y devuelve lo que vería la persona y por qué."""
     corpus = (fragmentos or cargar_fragmentos()) + (documentos_extra or [])
+    cuarentena = []
+    if "firmas" in defensas:  # se revisa todo lo que entra, antes de que el buscador lo pueda elegir
+        corpus, cuarentena = revisar_documentos(corpus)
     documentos = recuperar(pregunta, corpus)
     sistema, usuario = armar_prompt(pregunta, documentos, defensas, tabla)
     try:
@@ -93,7 +99,8 @@ def responder(pregunta: str, modelo, tabla: TablaOficial, defensas: set[str], mo
         verificacion.ok = False
         verificacion.problemas += [f"Clave inexistente: {c}" for c in desconocidas]
     final, estado = compuerta_respuesta(modo, texto, verificacion)
-    return {"pregunta": pregunta, "recuperados": [d["id"] for d in documentos], "texto_modelo": texto_modelo,
+    return {"pregunta": pregunta, "recuperados": [d["id"] for d in documentos],
+            "cuarentena": [f"{c['id']}: {'+'.join(c['firmas'])}" for c in cuarentena], "texto_modelo": texto_modelo,
             "texto_final": final, "estado": estado, "problemas": verificacion.problemas}
 
 

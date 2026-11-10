@@ -1,0 +1,32 @@
+# Dependabot: parches automáticos.
+# Cada lunes revisa las librerías de Python (requirements.txt) y las acciones de GitHub que usa
+# el proyecto. Si hay una versión nueva o una falla de seguridad conocida, abre una propuesta de
+# actualización (pull request). Las pruebas de .github/workflows/pruebas.yml corren solas sobre
+# esa propuesta: solo se acepta si salen en verde.
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Bogota"
+    # Sube la versión mínima en requirements.txt (por ejemplo, pydantic>=2.6 pasa a >=2.9).
+    versioning-strategy: "increase"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    groups:
+      librerias-python:
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Bogota"
+    commit-message:
+      prefix: "ci"

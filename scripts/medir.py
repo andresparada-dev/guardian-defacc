@@ -10,7 +10,8 @@ Ejemplos (desde la raíz del repo):
   python scripts/medir.py --modelo gemini --preset completo             # medición completa (si hay cuota)
   python scripts/medir.py --modelo gemini --casos A01,A02,L01 --escenarios A
 
-Presets: minimo (1 llamada por caso), medio (2) y completo (3). La compuerta no gasta llamadas.
+Presets: minimo (1 llamada por caso), medio (2) y completo (3, más una o dos por cada ataque que la
+capa de firmas mande a cuarentena). La compuerta y las firmas no gastan llamadas.
 Si se acaba la cuota, corre el mismo comando otro día: lo ya respondido sale de la caché.
 """
 
@@ -63,7 +64,7 @@ def main():
     if a.modelo == "comprometido":
         print("Peor caso simulado: estos resultados miden la compuerta, no a la IA. No gasta llamadas.")
     else:
-        maximo = estimar_llamadas(configuraciones, n_a, n_b)
+        maximo = estimar_llamadas(configuraciones, n_a, n_b, len(casos_a["ataques"]) if "A" in escenarios else 0)
         print(f"Esta corrida necesita hasta {maximo} llamadas (menos si ya hay respuestas en caché).")
         if a.max_llamadas is not None and maximo > a.max_llamadas:
             print(f"Ojo: el tope es {a.max_llamadas}. Se detendrá al llegar y podrás seguir otro día con el mismo comando.")

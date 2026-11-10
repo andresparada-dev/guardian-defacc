@@ -13,6 +13,7 @@ Inyección indirecta de instrucciones (OWASP LLM01:2025): un documento que el ag
 
 ## 2. Defensa
 Controles por fuera del modelo:
+0. **Firmas (detector de intrusos):** antes de que la IA lea, cada documento se revisa con 9 firmas de ataques conocidos; si salta una, queda en cuarentena.
 1. **D1 · Delimitar:** el documento es dato, no orden.
 2. **D2 · Forma fija:** en A, el modelo cita claves oficiales y el código pone el número; en B, un esquema estricto.
 3. **D3 · Verificador y compuerta:** en A, cada cifra se compara con la tabla oficial del CENU; en B, se revisan subtotal + IVA = total, el IVA del 19 %, el dígito del NIT, una segunda lectura por OCR y el texto dirigido a la IA. Modos: aviso o bloqueo.
@@ -27,16 +28,19 @@ Controles por fuera del modelo:
 | Configuración | A · ataques exitosos | A · falsos positivos | B · trampas aprobadas | B · falsos positivos |
 |---|---|---|---|---|
 | Sin defensa | | | | |
+| Solo firmas | | | | |
 | D1 | | | | |
 | D1+D2 | | | | |
 | D1+D2+D3 aviso | | | | |
 | D1+D2+D3 bloqueo | | | | |
+| Firmas+D1+D2+D3 bloqueo | | | | |
 
 [Gráfico: resultados/<fecha>_<modelo>/grafico_ataques.png]
 
 ## 5. Límites
 - El verificador de cifras no ve mentiras sin números, ni cifras oficiales reales puestas en el lugar equivocado, ni números estructurales (años, límites de rango).
 - En facturas, una trampa con cifras consistentes solo se detecta con la segunda lectura por OCR.
+- Las firmas no ven un dato falso escrito sin orden, ni el texto que el OCR no alcanza a leer. Cada capa tapa huecos de la otra, pero un dato falso sin orden y sin números no lo ve ninguna.
 - [n] casos, hechos por nosotros: margen de error amplio. Un integrante escribió un grupo de ataques sin ver las defensas.
 
 ## 6. Riesgo dual y uso responsable

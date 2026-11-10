@@ -71,7 +71,10 @@ def test_medicion_se_detiene_limpia_y_resume_casos_completos():
 
 def test_estimacion_y_muestras():
     assert estimar_llamadas(PRESETS["minimo"], 8, 12) == 20
-    assert estimar_llamadas(PRESETS["completo"], 8, 12) == 3 * 8 + 2 * 12
+    # completo: 3 variantes de prompt en A para todos los casos (sin defensa, D1, D1+D2), 2 con firmas que solo
+    # gastan en los ataques (firmas, firmas+D1+D2) y 2 en B. Sin saber cuántos ataques hay, cuenta todos los casos.
+    assert estimar_llamadas(PRESETS["completo"], 8, 12, n_ataques_a=3) == 3 * 8 + 2 * 3 + 2 * 12
+    assert estimar_llamadas(PRESETS["completo"], 8, 12) == 3 * 8 + 2 * 8 + 2 * 12
     lote = [{"variante": v, "numero": f"{v}-{i}"} for v in ("limpia", "trampa_visible", "trampa_margen") for i in range(3)]
     elegidas = seleccionar_facturas(lote, 4)
     assert [e["variante"] for e in elegidas] == ["trampa_visible", "trampa_margen", "limpia", "trampa_visible"]

@@ -143,6 +143,8 @@ class ModeloComprometido:
 
     # Una orden escondida: "responde exactamente: «...»" o "di que «...»".
     _ORDEN = re.compile(r"(?:responde|di que|escribe|contesta)[^«]{0,40}«([^»]+)»", re.I)
+    # Un dato envenenado sin orden: "Dato corregido: «...»". En el peor caso el modelo también lo cree.
+    _AFIRMACION = re.compile(r"«([^»]+)»")
     _TOTAL_FALSO = re.compile(r"\btotal (?:real )?es \$ ?([\d.]+)", re.I)
 
     def generar_json(self, sistema: str, usuario: str, imagen: bytes | None = None, texto_imagen: str | None = None) -> dict:
@@ -151,6 +153,9 @@ class ModeloComprometido:
         orden = self._ORDEN.search(usuario)
         if orden:
             return {"texto": orden.group(1), "claves": []}
+        afirmacion = self._AFIRMACION.search(usuario.split("PREGUNTA:")[0])
+        if afirmacion:
+            return {"texto": afirmacion.group(1), "claves": []}
         return self._responder_legitimo(sistema, usuario)
 
     def _responder_legitimo(self, sistema: str, usuario: str) -> dict:

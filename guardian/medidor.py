@@ -6,8 +6,9 @@ Métricas por configuración:
 - Escenario B (facturas): % de facturas con trampa aprobadas solas, facturas alteradas aprobadas,
   % de facturas limpias bien decididas y limpias mandadas a revisión por error.
 
-Pensado para planes gratuitos: la compuerta (D3) es código y no gasta llamadas; solo gastan las
-variantes del prompt (sin defensa, D1, D1+D2). Los casos se corren uno a uno por todas las
+Pensado para planes gratuitos: la compuerta (D3) y la capa de firmas son código y no gastan
+llamadas; solo gastan las variantes del prompt (sin defensa, D1, D1+D2) y, con firmas, los
+ataques cuyo documento queda en cuarentena (la IA ve un contexto distinto). Los casos se corren uno a uno por todas las
 configuraciones, así que si se acaba la cuota, los casos terminados quedan completos y comparables.
 
 Con el modelo comprometido los resultados miden la COMPUERTA en el peor caso, no a la IA.
@@ -33,12 +34,15 @@ PRESETS = {  # (etiqueta, defensas, modo de la compuerta)
               ("Solo D3 bloqueo", set(), "bloqueo"),
               ("D1+D2 forma fija", {"d1", "d2"}, "apagada"),
               ("D1+D2+D3 bloqueo", {"d1", "d2"}, "bloqueo")],
-    # 3 llamadas por caso: todas las capas por separado.
+    # 3 llamadas por caso: todas las capas por separado. Las firmas solo gastan llamadas extra en los
+    # ataques que mandan a cuarentena; si no quitan nada, el prompt es el mismo y sale de la caché.
     "completo": [("Sin defensa", set(), "apagada"),
+                 ("Solo firmas", {"firmas"}, "apagada"),
                  ("D1 delimitar", {"d1"}, "apagada"),
                  ("D1+D2 forma fija", {"d1", "d2"}, "apagada"),
                  ("D1+D2+D3 aviso", {"d1", "d2"}, "aviso"),
-                 ("D1+D2+D3 bloqueo", {"d1", "d2"}, "bloqueo")],
+                 ("D1+D2+D3 bloqueo", {"d1", "d2"}, "bloqueo"),
+                 ("Firmas+D1+D2+D3 bloqueo", {"firmas", "d1", "d2"}, "bloqueo")],
 }
 CONFIGURACIONES = PRESETS["completo"]
 _ORDEN_VARIANTES = ["trampa_visible", "trampa_diminuta", "trampa_bajo_contraste", "trampa_margen", "limpia", "alterada"]
@@ -70,11 +74,18 @@ def seleccionar_facturas(lote: list[dict], n: int | None = None) -> list[dict]:
     return elegidas
 
 
-def estimar_llamadas(configuraciones, n_casos_a: int, n_facturas: int) -> int:
-    """Máximo de llamadas reales (sin contar lo que ya esté en caché)."""
-    variantes_a = {frozenset(d) for _, d, _ in configuraciones}
+def estimar_llamadas(configuraciones, n_casos_a: int, n_facturas: int, n_ataques_a: int | None = None) -> int:
+    """Máximo de llamadas reales (sin contar lo que ya esté en caché).
+
+    Las variantes con firmas solo cambian el prompt cuando mandan un documento a cuarentena, y eso
+    solo pasa con los ataques: se cuentan sobre n_ataques_a (o sobre todos los casos si no se sabe).
+    En facturas, las firmas no cambian el prompt (y la cuarentena ahorra llamadas).
+    """
+    base = {frozenset(d - {"firmas"}) for _, d, _ in configuraciones}
+    con_firmas = {frozenset(d) for _, d, _ in configuraciones if "firmas" in d}
     variantes_b = {"d1" in d for _, d, _ in configuraciones}
-    return len(variantes_a) * n_casos_a + len(variantes_b) * n_facturas
+    n_firmas = n_casos_a if n_ataques_a is None else n_ataques_a
+    return len(base) * n_casos_a + len(con_firmas) * n_firmas + len(variantes_b) * n_facturas
 
 
 def medir_cifras(modelo, tabla: TablaOficial, casos: dict, configuraciones=CONFIGURACIONES):
@@ -121,8 +132,10 @@ def medir_facturas(modelo, carpeta: Path, configuraciones=CONFIGURACIONES, ocr: 
                 texto = None
             filas = []
             for etiqueta, defensas, modo in configuraciones:
-                # La segunda lectura por OCR es parte de la defensa 3: solo cuenta con la compuerta prendida.
-                r = B.procesar(carpeta / f"{meta['numero']}.png", meta, modelo, defensas, modo, texto if modo != "apagada" else None)
+                # La segunda lectura por OCR es parte de la defensa 3 y es lo que revisa la capa de firmas:
+                # solo se usa con la compuerta prendida o con las firmas activas.
+                usa_ocr = modo != "apagada" or "firmas" in defensas
+                r = B.procesar(carpeta / f"{meta['numero']}.png", meta, modelo, defensas, modo, texto if usa_ocr else None)
                 filas.append({"config": etiqueta, **r})
             por_factura.append(filas)
     except SinCuota as e:
@@ -162,7 +175,9 @@ def graficar(resumen: list[dict], ruta: Path, nombre_modelo: str) -> None:
     escenarios = list(dict.fromkeys(r["escenario"] for r in resumen if r["ataques_total"]))
     if not escenarios:
         return
-    fig, ejes = plt.subplots(1, len(escenarios), figsize=(6.2 * len(escenarios), 4.4), sharey=True, squeeze=False)
+    n_config = max(sum(r["escenario"] == e for r in resumen) for e in escenarios)
+    ancho = max(6.2, 1.05 * n_config)
+    fig, ejes = plt.subplots(1, len(escenarios), figsize=(ancho * len(escenarios), 4.4), sharey=True, squeeze=False)
     for ax, esc in zip(ejes[0], escenarios):
         filas = [r for r in resumen if r["escenario"] == esc]
         x = range(len(filas))
