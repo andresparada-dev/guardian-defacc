@@ -10,7 +10,8 @@ Planeación, análisis y videos del proyecto **Guardián** para el Defensive Acc
 | `04_como_vamos_a_construir.pdf` | Explicación para el equipo: la idea, el diagrama, las 3 defensas, quién hace qué y el horario. | 9 nov 2026 |
 | `videos/guardian_teaser_23s.mp4` | Teaser de 23 segundos para redes y para abrir el pitch, con su portada y el texto para publicar. | 9 nov 2026 |
 | `videos/guardian_demo_2min.mp4` | Video de demostración de 2 minutos (entregable opcional del hackatón), con su portada. | 9 nov 2026 |
+| `videos/guardian_estilo_45s.mp4` | Video de 45 segundos con estilo de lanzamiento de producto: skyline de Bogotá en trama de puntos, verificación de una factura y cierre con logo. Código en `video/estilo/`. | 11 nov 2026 |
 
 **Sobre los resultados de los videos:** muestran la salida real del código con el modelo comprometido (peor caso simulado) y facturas sintéticas. No son resultados de Gemini; esos se miden el sábado 14 y los videos se regeneran desde `video/` en el repositorio del guardián.
 
-**Música de los videos:** "Happy Beats / Business Moves" (Vol. 1 y Vol. 10) de Sascha Ende, [ende.app](https://ende.app/en), licencia CC BY 4.0. Al publicarlos hay que dar el crédito: "Música: Sascha Ende, ende.app (CC BY 4.0)".
+**Música de los videos:** "Happy Beats / Business Moves" (Vol. 1, Vol. 10 y Vol. 12) de Sascha Ende, [ende.app](https://ende.app/en), licencia CC BY 4.0. Al publicarlos hay que dar el crédito: "Música: Sascha Ende, ende.app (CC BY 4.0)".
